@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-// import { Cluster } from '../cluster';
 import { ClusterPersistenceService } from '../cluster-persistence.service';
 import { User } from '../user';
 
@@ -13,12 +12,9 @@ export class SessionOpsComponent implements OnInit
 {
    public user: User;
    
-//   public get clusterName(): string { return this._cluster.name};
-//   public set clusterName( aName: string) { this._cluster.name = aName};
-   
    private getUser(): void
    {
-      // ".then()" --> hooks up promise resolution event, I think.  Resolution will drive a UI "digest" cycle that will
+      // ".then()" --> hooks up promise resolution event, I think.  Resolution will drive a UI "digest" (change-detection) cycle that will
       // result in the UI being updated with new data.  At this point, I'll just go ahead and call Angular "amazing".
 
       this._persistenceSvc.user.then( 

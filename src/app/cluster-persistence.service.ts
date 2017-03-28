@@ -53,7 +53,6 @@ export class ClusterPersistenceService
    {
       let me = this.constructor.name + '.init(): ';
       console.log( me);
-      this.playWithObservables()
       if (this._initialized)    // Probably not threadsafe, but I'll think about that tomorrow.  After all, tomorrow is another day.
       {
          console.log( me + "already initialized");
@@ -80,14 +79,6 @@ export class ClusterPersistenceService
 
       this._initialized = true;
       console.log( me + "initialized");
-   }
-
-   private playWithObservables()
-   {
-      let me = this.constructor.name + '.playWithObservables(): ';
-      console.log( me);
-      // this.observableItem = Observable.of( 1,2,3);
-      this.observableItem = Observable.timer( 300, 1000);
    }
 
    private authStateChanged( aFirebaseUser): void
@@ -122,24 +113,11 @@ export class ClusterPersistenceService
       this._db = firebase.database();
       console.log( me + `initialized firebase, db = "${this._db}"`);
       // let dbRef = this._db.ref( 'clusterNames');
-      // dbRef.foo(); // Should be compile-time error.
 
-      // TODO: put this handful of Observation-making code into a reusable subroutine, since there's nothing specific to
-      // the snapshots generated here.
       let clusterNamesObservable = this.makeDatabaseSnapshotObservable( 'clusterNames');
       let obs = clusterNamesObservable; // .scan(x => x); // scan( x => x) doesn't do what we want.
       this._clusterNamesObservable = obs;
       
-//      Observable.fromEventPattern(
-//         (function addHandler( h: (a: firebase.database.DataSnapshot, b?: string) => any) {
-//            // Need to explicitly bind to firebaseError here because there's no easy way (that I can tell) to
-//            // generate/catch errors using the Observable subscription.
-//            // Re: .bind(this): See http://stackoverflow.com/a/20279485/370611
-//            dbRef.on( 'value', h, this.firebaseError); }).bind(this), 
-//         function delHandler( h: (a: firebase.database.DataSnapshot, b?: string) => any) {
-//            dbRef.off( 'value', h);
-//         });
-
       let subscription = clusterNamesObservable.subscribe(
          (snapshot: firebase.database.DataSnapshot) => this.clusterNamesValueChanged( snapshot)
          ,(err) => this.firebaseError( err) // Doesn't work.
@@ -196,7 +174,6 @@ export class ClusterPersistenceService
    public logout()
    {
       let me = this.constructor.name + ".logout(): ";
-      // alert( "logging out");
       console.log( me);
       firebase.auth().signOut().then( function() {
          console.log( "signout successful");
@@ -220,18 +197,5 @@ export class ClusterPersistenceService
       console.log( `clusterNamesValueChanged(${aSnapshot}): clusterNames = ${clusterNames}`);
    }
    
-   getClusterNames(): string[]
-   {
-      let me = this.constructor.name + ".getClusterNames(): ";
-      console.log( me + `getClusterNames()`);
-      return new Array<string>();
-   }
-   
-   /** Get cluster xml from some place wondrous and mysterious (like a server).
-    */
-   private getClusterXml(): string
-   {
-      return "";
-   }
 
 }
