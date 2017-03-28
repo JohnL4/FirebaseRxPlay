@@ -34,7 +34,7 @@ export class ClusterPersistenceService
    private _userPromiseDeferred: {resolve: any, reject: any};
    
    private _clusterNamesObservable: Observable<firebase.database.DataSnapshot>;
-   public get clusterNamesObservable(): Observable<any> { return this._clusterNamesObservable }
+   public get clusterNamesObservable(): Observable<firebase.database.DataSnapshot> { return this._clusterNamesObservable }
    
    private _initialized: boolean = false;
    
@@ -114,11 +114,9 @@ export class ClusterPersistenceService
       console.log( me + `initialized firebase, db = "${this._db}"`);
       // let dbRef = this._db.ref( 'clusterNames');
 
-      let clusterNamesObservable = this.makeDatabaseSnapshotObservable( 'clusterNames');
-      let obs = clusterNamesObservable; // .scan(x => x); // scan( x => x) doesn't do what we want.
-      this._clusterNamesObservable = obs;
+      this._clusterNamesObservable = this.makeDatabaseSnapshotObservable( 'clusterNames');
       
-      let subscription = clusterNamesObservable.subscribe(
+      let subscription = this._clusterNamesObservable.subscribe(
          (snapshot: firebase.database.DataSnapshot) => this.clusterNamesValueChanged( snapshot)
          ,(err) => this.firebaseError( err) // Doesn't work.
       );
