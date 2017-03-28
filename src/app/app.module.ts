@@ -6,10 +6,12 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 
 import { ClusterPersistenceService } from './cluster-persistence.service';
+import { SessionOpsComponent } from './session-ops/session-ops.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SessionOpsComponent
   ],
   imports: [
     BrowserModule,
