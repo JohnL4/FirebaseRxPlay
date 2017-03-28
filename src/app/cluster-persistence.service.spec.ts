@@ -1,8 +1,9 @@
-import { TestBed, inject } from '@angular/core/testing';
+/* tslint:disable:no-unused-variable */
 
+import { TestBed, async, inject } from '@angular/core/testing';
 import { ClusterPersistenceService } from './cluster-persistence.service';
 
-describe('ClusterPersistenceServiceService', () => {
+describe('ClusterPersistenceService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [ClusterPersistenceService]
