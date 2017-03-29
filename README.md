@@ -27,7 +27,8 @@ Also, `session-ops` has login/logout functions.
 ### The glitch
 
 So, the problem is on the login-via-redirect.  This thing works like a champ if you're already logged in and you open 
-or refresh the page.  It just doesn't work  if you're trying to log in.
+or refresh the page.  It just doesn't work  if you're trying to log in.  It probably doesn't help that I don't fully
+understand what's going on in the redirect, either.
 
 
 # FirebaseRxPlay
