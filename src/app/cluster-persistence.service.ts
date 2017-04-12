@@ -33,7 +33,7 @@ export class ClusterPersistenceService
    //
    private _userPromiseDeferred: {resolve: any, reject: any};
    
-   private _clusterNamesObservable: Observable<string[]>;
+   private _clusterNamesObservable: BehaviorSubject<string[]>;
    public get clusterNamesObservable(): Observable<string[]> { return this._clusterNamesObservable }
    
    private _initialized: boolean = false;
@@ -115,8 +115,12 @@ export class ClusterPersistenceService
       // let dbRef = this._db.ref( 'clusterNames');
 
       
-      this._clusterNamesObservable = this.makeDatabaseSnapshotObservable( 'clusterNames')
-         .map( s => s.val());
+      this._clusterNamesObservable = new BehaviorSubject<string[]>(new Array<string>());
+      
+      this.makeDatabaseSnapshotObservable( 'clusterNames')
+         .map( s => s.val())
+         .multicast( this._clusterNamesObservable)
+         .connect();
       
       let subscription = this._clusterNamesObservable.subscribe(
          (clusterNames: string[]) => this.clusterNamesValueChanged( clusterNames)
@@ -194,7 +198,7 @@ export class ClusterPersistenceService
    {
       console.log( `clusterNamesValueChanged(${aClusterNames})`);
       let clusterNames = aClusterNames;
-      console.log( `clusterNamesValueChanged(${aClusterNames}): clusterNames = ${aClusterNames.join( ", ")}`);
+      console.log( `clusterNamesValueChanged(${aClusterNames}): clusterNames = ${clusterNames.join( ", ")}`);
    }
    
 
