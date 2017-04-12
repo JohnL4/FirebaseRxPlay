@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 
 import { ClusterPersistenceService } from './cluster-persistence.service';
 
@@ -10,7 +10,8 @@ import { ClusterPersistenceService } from './cluster-persistence.service';
 export class AppComponent implements OnInit {
   title = 'app works!';
 
-  constructor( private _persistenceSvc: ClusterPersistenceService) {}
+   constructor( private _persistenceSvc: ClusterPersistenceService,
+                private _changeDetectorRef: ChangeDetectorRef) {}
 
   ngOnInit()
   {
