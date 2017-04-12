@@ -198,7 +198,7 @@ export class ClusterPersistenceService
    {
       console.log( `clusterNamesValueChanged(${aClusterNames})`);
       let clusterNames = aClusterNames;
-      console.log( `clusterNamesValueChanged(${aClusterNames}): clusterNames = ${clusterNames.join( ", ")}`);
+      console.log( `clusterNamesValueChanged(${clusterNames}): ${clusterNames.length} clusterNames = ${clusterNames.join( ", ")}`);
    }
    
 

@@ -14,8 +14,13 @@ export class AppComponent implements OnInit {
                 private _changeDetectorRef: ChangeDetectorRef) {}
 
   ngOnInit()
-  {
-    this._persistenceSvc.init();
-    this._persistenceSvc.connectToDatabase();
-  }
+   {
+      let me = this.constructor.name + ".ngOnInit(): ";
+      this._persistenceSvc.init();
+      this._persistenceSvc.connectToDatabase();
+      this._persistenceSvc.clusterNamesObservable.subscribe(() => {
+         console.log( me + `detecting changes`);
+         this._changeDetectorRef.detectChanges()
+      });
+   }
 }
