@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
+import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 import * as firebase from "firebase";
 
@@ -33,8 +33,8 @@ export class ClusterPersistenceService
    //
    private _userPromiseDeferred: {resolve: any, reject: any};
    
-   private _clusterNamesObservable: Observable<firebase.database.DataSnapshot>;
-   public get clusterNamesObservable(): Observable<firebase.database.DataSnapshot> { return this._clusterNamesObservable }
+   private _clusterNamesObservable: Observable<string[]>;
+   public get clusterNamesObservable(): Observable<string[]> { return this._clusterNamesObservable }
    
    private _initialized: boolean = false;
    
@@ -114,10 +114,12 @@ export class ClusterPersistenceService
       console.log( me + `initialized firebase, db = "${this._db}"`);
       // let dbRef = this._db.ref( 'clusterNames');
 
-      this._clusterNamesObservable = this.makeDatabaseSnapshotObservable( 'clusterNames');
+      
+      this._clusterNamesObservable = this.makeDatabaseSnapshotObservable( 'clusterNames')
+         .map( s => s.val());
       
       let subscription = this._clusterNamesObservable.subscribe(
-         (snapshot: firebase.database.DataSnapshot) => this.clusterNamesValueChanged( snapshot)
+         (clusterNames: string[]) => this.clusterNamesValueChanged( clusterNames)
          ,(err) => this.firebaseError( err) // Doesn't work.
       );
 
@@ -188,11 +190,11 @@ export class ClusterPersistenceService
       //    this.login();
    }
    
-   private clusterNamesValueChanged( aSnapshot: firebase.database.DataSnapshot)
+   private clusterNamesValueChanged( aClusterNames: string[])
    {
-      console.log( `clusterNamesValueChanged(${aSnapshot})`);
-      let clusterNames = aSnapshot.val();
-      console.log( `clusterNamesValueChanged(${aSnapshot}): clusterNames = ${clusterNames}`);
+      console.log( `clusterNamesValueChanged(${aClusterNames})`);
+      let clusterNames = aClusterNames;
+      console.log( `clusterNamesValueChanged(${aClusterNames}): clusterNames = ${aClusterNames.join( ", ")}`);
    }
    
 

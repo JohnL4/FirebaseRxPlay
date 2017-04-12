@@ -27,7 +27,7 @@
     <ul>
       <!-- When clusterNamesObservable is FromEventPatternObservable<{},{}>, the following fails with "cannot find
         differ supporting object" or some such. -->
-      <li *ngFor="let clusterName of (_persistenceSvc.clusterNamesObservable | async)?.val()">{{clusterName}}</li>
+      <li *ngFor="let clusterName of _persistenceSvc.clusterNamesObservable | async">{{clusterName}}</li>
     </ul>
   </div>
 </div>
